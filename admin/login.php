@@ -8,9 +8,7 @@ if(isset($_POST['login'])){
 
 	if($username === 'didik04' && $password === 'didik'){
 
-		if (isset($_POST['ingat'])) {
-			$_SESSION['login'] = true;
-		}
+		$_SESSION['login'] = true;
 
 		header('Location: index.php');
 		exit;
@@ -57,7 +55,7 @@ if(isset($_POST['login'])){
 						<div class="mb-3">
 							<div class="input-group">
 								<div class="input-group-text"><i class="bi bi-shield-lock-fill"></i></div>
-								<input type="text" name="password" id="password" class="form-control" autocomplete="off" placeholder="Masukan password">
+								<input type="password" name="password" id="password" class="form-control" autocomplete="off" placeholder="Masukan password">
 							</div>
 						</div>
 						<div class="mb-3">
