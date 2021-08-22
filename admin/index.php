@@ -10,6 +10,19 @@ if($_SESSION['login'] != true ) {
 
 $produk = read();
 
+if(isset($_POST['tambah'])){
+	if(tambah($_POST) > 0 ) {
+		echo "<script>
+		alert('Data berhasil di tambahkan');
+		document.location.href = 'index.php';
+		</script>";
+	} else {
+		echo "<script>
+		alert('Data gagal di tambahkan');
+		</script>";
+	}
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +38,7 @@ $produk = read();
 <body>
 	
 	<!-- Navbar -->
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light shadow">
 	  <div class="container-fluid">
 	    <a class="navbar-brand" href="#">Admin</a>
 	    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,12 +59,18 @@ $produk = read();
 
 	<!-- Table -->
 	<div class="container-fluid mt-3 border rounded">
+
+		<!-- Button modal -->
+
+
 		<h2 class="text-center my-3">Daftar Produk</h2>
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Tambah Produk</button>
 		<hr>
 		<table class="table table-hover">
 		  <thead>
 		    <tr>
 		      <th scope="col">No</th>
+		      <th scope="col">Aksi</th>
 		      <th scope="col">Nama</th>
 		      <th scope="col">Harga</th>
 		      <th scope="col">Berat</th>
@@ -64,9 +83,13 @@ $produk = read();
 		    <?php foreach ($produk as $prd): ?>
 		    	<tr>
 			      <th><?= $i++; ?></th>
+			      <td>
+			      	<a href="edit.php?id=<?= $prd['id']; ?>" class="btn btn-warning">Edit</a> 
+			      	<a href="hapus.php?id=<?= $prd['id']; ?>" class="btn btn-danger" onclick="return confirm('Yakin untuk menghapus item >');">Hapus</a>
+			      </td>
 			      <td><?= $prd['nama']; ?></td>
-			      <td><?= $prd['harga']; ?></td>
-			      <td><?= $prd['berat']; ?></td>
+			      <td>Rp. <?= $prd['harga']; ?></td>
+			      <td><?= $prd['berat']; ?> Kg</td>
 			      <td><?= $prd['deskripsi']; ?></td>
 			      <td>
 			      	<img src="../img/<?= $prd['gambar']; ?>" alt="">
@@ -80,3 +103,53 @@ $produk = read();
 	<script src="../js/bootstrap.min.js"></script>
 </body>
 </html>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Form Tambah Barang</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="POST" enctype="multipart/form-data">
+        	<div class="mb-3">
+        		<div class="input-group">
+        			<div class="input-group-text"><i class="bi bi-bag-fill"></i></div>
+        			<input type="text" class="form-control" name="nama" required placeholder="Masukan nama barang">
+        		</div>
+        	</div>
+        	<div class="mb-3">
+        		<div class="input-group">
+        			<div class="input-group-text"><i class="bi bi-cash-coin"></i></div>
+        			<input type="number" class="form-control" name="harga" required placeholder="Masukan harga barang">
+        		</div>
+        	</div>
+        	<div class="mb-3">
+        		<div class="input-group">
+        			<div class="input-group-text"><i class="bi bi-calculator"></i></div>
+        			<input type="number" class="form-control" name="berat" required placeholder="Masukan berat barang">
+        		</div>
+        	</div>
+        	<div class="mb-3">
+        		<div class="input-group">
+        			<div class="input-group-text"><i class="bi bi-calculator"></i></div>
+        			<textarea name="deskripsi" cols="40" rows="7"></textarea>
+        		</div>
+        	</div>
+        	<div class="mb-3">
+        		<div class="input-group">
+        			<div class="input-group-text"><i class="bi bi-imagae-fill"></i></div>
+        			<input type="file" name="gambar" required placeholder="Masukan gambar" class="form-control">
+        		</div>
+        	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" name="tambah">Tambah</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
